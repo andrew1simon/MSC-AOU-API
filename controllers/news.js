@@ -6,10 +6,10 @@ async function GetAllNews(req,res) {
     res.send(allNews)
 }
 async function CreateNewNews(req,res) {
-    await prisma.news.create({data: {title:"testing" , body:"testing 123"}})
+    await prisma.news.create({data: {title:"testing" , content:"testing 123"}})
     res.send("Done")
 }
-
 module.exports = { 
 	GetAllNews , CreateNewNews
 }
+

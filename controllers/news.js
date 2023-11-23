@@ -12,7 +12,7 @@ async function CreateNewNews(req, res) {
         res.status(201).json({ msg: 'News Created' })
     } catch (error) {
         console.error(error);
-        res.status(500).json({ msg: 'Server Error' })
+        res.status(500).json({ msg: 'Server Error'})
     }
 }
 async function GetNewsById(req, res) {

@@ -13,9 +13,11 @@ enum Role {
   Mentor
 }
 enum Team {
-  Web
-  Ai 
-  cyber
+  Web   @map(name: "Web Development")
+  Ai    @map(name: "Artificial Intelligence")
+  Cyber @map(name: "Cyber Security")
+  Ui_ux @map(name: "Ui/Ux")
+  Data  @map(name: "Data Science")
 }
 enum TeamTitle {
   Head    @map(name: "Team Head")
@@ -23,12 +25,13 @@ enum TeamTitle {
   Member  @map(name: "Team Member")
   Student @map(name: "Student")
 }
+
 model User {
   id       String @id @default(uuid())
-  userName String  @unique 
+  userName String  @unique
   name     String
   password String
-  team      Team 
+  team      Team
   role      Role        @default(USER)
   TeamTitle TeamTitle   @default(Student)
 }
@@ -38,8 +41,14 @@ model News {
   title String 
   hasImg Boolean @default(false)
   img    String?
-  description String?
-  content     String?
+  subTitle String?
+  content     String
   date        DateTime  @default(now())
   lastUpdate  DateTime  @updatedAt
+}
+
+model events {
+  id   String @id @default(uuid())
+  
+
 }

@@ -15,6 +15,21 @@ async function CreateNewNews(req, res) {
         res.status(500).json({ msg: 'Server Error' })
     }
 }
+async function GetNewsById(req, res) {
+    const { id } = req.params;
+    try {
+        const news = await prisma.news.findUnique({ where: { id } });
+        if (news) {
+            res.send(news).json({ msg: 'News found' });
+        } else {
+            res.status(404).json({ msg: 'News not found' });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ msg: 'Server Error' });
+    }
+}
+
 module.exports = { 
-	GetAllNews , CreateNewNews
+	GetAllNews , CreateNewNews, GetNewsById
 }

@@ -48,7 +48,13 @@ model News {
 }
 
 model events {
-  id   String @id @default(uuid())
-  
-
+  id   String         @id @default(uuid())
+  title String
+  Createdate  DateTime@default(now())
+  subtitle String?
+  content String
+  lastUpdate DateTime @updatedAt
+  eventtime DateTime
+  hasImg Boolean      @default(false)
+  img    String?
 }

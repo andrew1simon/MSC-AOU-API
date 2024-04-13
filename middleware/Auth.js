@@ -8,8 +8,9 @@ async function CheckAdmin(req,res,next) {
     if(token) {
         let decoded = jwt.verify(token,JWTKey)
         if(decoded) {
-            const DB = await prisma.user.findFirst({where:{id:decoded.userId , role:"ADMIN"}})
+            const DB = await prisma.user.findFirst({select: {id:true , userName:true , team:true , TeamTitle:true , role:true , name:true } , where:{id:decoded.userId , role:"ADMIN"}})
             if(DB) {
+                req.user = DB
                 next()
             }else{
                 res.status(403).json({msg:"action forbidden"})
@@ -17,7 +18,7 @@ async function CheckAdmin(req,res,next) {
         }
     }
     else {
-        res.status(403).json({msg:"invalid action"})
+        res.status(403).json({msg:"You are not logged in"})
     }
     
 }
@@ -35,7 +36,7 @@ async function CheckAuth(req,res,next) {
         }
     }
     else {
-        res.status(403).json({msg:"invalid action"})
+        res.status(403).json({msg:"action forbidden"})
     }
     
 }

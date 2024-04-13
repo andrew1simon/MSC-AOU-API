@@ -5,22 +5,33 @@ async function GetAllNews(req,res) {
     let allNews = await prisma.news.findMany();
     res.send(allNews)
 }
-async function CreateNewNews(req, res) {
-    let { title, content, hasImg, subTitle } = req.body;
+
+async function GetAllNewsV2(req,res) {
+    let allNews = await prisma.news.findMany({ select: {id: true , date: true , currentRevision: {select: {revision: true}}} });
+    res.send(allNews)
+}
+
+async function GetHomeNews(req,res) {
     try {
-        await prisma.news.create({ data: { title, content, hasImg, subTitle} });
-        res.status(201).json({ msg: 'News Created' })
-    } catch (error) {
+        const news = await prisma.news.findMany({ select: {id: true , date: true , currentRevision: {select: {revision: true}}} , take: 4 , orderBy: {date: 'desc'} });
+        if (news) {
+            res.status(200).json(news);
+        } else {
+            res.status(404).json({ msg: 'News not found' });
+        }
+    }
+    catch (error) {
         console.error(error);
-        res.status(500).json({ msg: 'Server Error'})
+        res.status(500).json({ msg: 'Server Error' });
     }
 }
+
 async function GetNewsById(req, res) {
     const { id } = req.params;
     try {
-        const news = await prisma.news.findUnique({ where: { id } });
+        const news = await prisma.news.findUnique({ where: { id } , select: {id: true , date: true , currentRevision: {select: {revision: true}}} });
         if (news) {
-            res.send(news).json({ msg: 'News found' });
+            res.status(200).json(news);
         } else {
             res.status(404).json({ msg: 'News not found' });
         }
@@ -31,5 +42,5 @@ async function GetNewsById(req, res) {
 }
 
 module.exports = { 
-	GetAllNews , CreateNewNews, GetNewsById
+	GetAllNews , GetNewsById , GetAllNewsV2 , GetHomeNews
 }

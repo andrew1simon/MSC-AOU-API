@@ -1,0 +1,286 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "My API",
+    "description": "Description",
+    "version": "1.0.0"
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/news": {
+      "get": {
+        "description": "Used to get all news posts listing",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/events": {
+      "get": {
+        "description": "Used to get all events listing",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/admin/events/new": {
+      "post": {
+        "description": "Used to add new events.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "example": "string"
+                },
+                "content": {
+                  "example": "string"
+                },
+                "eventtime": {
+                  "example": "string"
+                },
+                "hasImg": {
+                  "example": "string"
+                },
+                "subTitle": {
+                  "example": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/admin/news/new": {
+      "post": {
+        "description": "Used to add new news posts.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "example": "string"
+                },
+                "content": {
+                  "example": "string"
+                },
+                "hasImg": {
+                  "example": "string"
+                },
+                "subTitle": {
+                  "example": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "description": "Used for login.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "userName": {
+                  "example": "string"
+                },
+                "password": {
+                  "example": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/auth/reg": {
+      "post": {
+        "description": "Used to add new users.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "string"
+                },
+                "userName": {
+                  "example": "string"
+                },
+                "password": {
+                  "example": "string"
+                },
+                "team": {
+                  "example": "String - One of those values: [ Web , Ai , Cyber , Ui_ux , Data ]"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/news/{id}": {
+      "get": {
+        "description": "Used to get a single news post by id.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "title": {
+                  "example": "string"
+                },
+                "hasImg": {
+                  "example": "boolean"
+                },
+                "img": {
+                  "example": "null"
+                },
+                "subTitle": {
+                  "example": "null"
+                },
+                "content": {
+                  "example": "string"
+                },
+                "date": {
+                  "example": "Date"
+                },
+                "lastUpdate": {
+                  "example": "Date"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/events/{id}": {
+      "get": {
+        "description": "Used to get a single event by id.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type":"object",
+              "properties": {
+                "id": {
+                "example": "string"
+                },
+                "title":{ 
+                  "example": "string"
+                  },
+                "hasImg": {
+                "example": "boolean"
+                },
+                "img":{ 
+                  "example": "string | null"
+                  },
+                "subTitle":{ 
+                  "example": "string | null"
+                  },
+                "content":{ 
+                  "example": "string"
+                  },
+                "Createdate" :{
+                  "example": "Date"
+                },
+                "eventtime":{ 
+                  "example": "Date"
+                  },
+                "lastUpdate":{ 
+                  "example": "Date"
+                  }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+    
+  }
+}

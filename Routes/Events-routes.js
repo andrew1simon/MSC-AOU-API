@@ -3,9 +3,8 @@ const { Router } = require('express');
 // Initialization 
 const router = Router(); 
 
-// Requests (/news/*)
+// Requests (/events/*)
 router.get('/', EventCont.GetAllEvents); 
-router.post('/event', EventCont.CreateNewEvents); 
-router.get('/get/:id', EventCont.GetEventById); 
+router.get('/:id', EventCont.GetEventById); 
 
 module.exports =  {router};

@@ -31,27 +31,52 @@ model User {
   userName String  @unique
   name     String
   password String
+  img      String?
   team      Team
   role      Role        @default(USER)
   TeamTitle TeamTitle   @default(Student)
+  NewsRevision NewsRevisions[]
+}
+enum NewsStatus {
+  Draft
+  Published
+}
+model News {
+  id                String @id @default(uuid())
+  date              DateTime  @default(now())
+  lastUpdate        DateTime  @updatedAt
+  revisions         NewsRevisions[] // This field represents the relationship
+  currentRevision   CurrentRevision? 
 }
 
-model News {
-  id    String @id @default(uuid())
-  title String 
-  hasImg Boolean @default(false)
-  img    String?
+model CurrentRevision {
+  id       String @id @default(uuid())
+  newsId   String @unique
+  news     News @relation(fields: [newsId], references: [id], onDelete: Cascade)
+  revisionId String @unique
+  revision  NewsRevisions @relation(fields: [revisionId], references: [id] , onDelete: Cascade)
+}
+
+model NewsRevisions {
+  id       String @id @default(uuid())
+  newsId   String
+  news     News @relation(fields: [newsId], references: [id]) // This field represents the relationship
+  status   NewsStatus @default(Published)
+  currentRevision CurrentRevision?
+  title    String
+  img      String?
   subTitle String?
-  content     String
-  date        DateTime  @default(now())
-  lastUpdate  DateTime  @updatedAt
+  content  String
+  CreatedBy String
+  user     User @relation(fields: [CreatedBy], references: [id])
+  date     DateTime  @default(now())
 }
 
 model events {
   id   String         @id @default(uuid())
   title String
   Createdate  DateTime@default(now())
-  subtitle String?
+  subTitle String?
   content String
   lastUpdate DateTime @updatedAt
   eventtime DateTime

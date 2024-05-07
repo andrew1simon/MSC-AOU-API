@@ -25,8 +25,10 @@ async function Login(req,res) {
         bcrypt.compare(password,checkUser['password'] , function(err,result) {
             if(!err) {
                 if(result) {
-                    let token = jwt.sign({ userId:checkUser.id },JWTKey,{expiresIn:"1h"} )
-                    res.cookie("token" , token , {expires: new Date(Date.now() + 3420000), httpOnly: true , secure:true}).status(200).json({checkUser , token})
+                    console.log(result)
+                    console.log(process.env.JWT_Key)
+                    let token = jwt.sign({ userId:checkUser.id }, process.env.JWT_Key ,{expiresIn:"1h"} )
+                    res.cookie("token" , token , {expires: new Date(Date.now() + 3420000), httpOnly: true , secure:true , sameSite: 'none'}).status(200).json({checkUser , token})
                 }else {
                     res.status(401).json({ msg: 'Invalid User' });
                 }

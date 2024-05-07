@@ -36,6 +36,7 @@ model User {
   role      Role        @default(USER)
   TeamTitle TeamTitle   @default(Student)
   NewsRevision NewsRevisions[]
+  EventRevision EventRevisions[]
 }
 enum NewsStatus {
   Draft
@@ -72,14 +73,36 @@ model NewsRevisions {
   date     DateTime  @default(now())
 }
 
-model events {
-  id   String         @id @default(uuid())
-  title String
-  Createdate  DateTime@default(now())
+
+model Events {
+  id                String @id @default(uuid())
+  date              DateTime  @default(now())
+  lastUpdate        DateTime  @updatedAt
+  revisions         EventRevisions[] // This field represents the relationship
+  currentRevision   CurrentRevisionEvents? 
+}
+
+model CurrentRevisionEvents {
+  id       String @id @default(uuid())
+  eventId   String @unique
+  event     Events @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  revisionId String @unique
+  revision  EventRevisions @relation(fields: [revisionId], references: [id] , onDelete: Cascade)
+}
+
+model EventRevisions {
+  id       String @id @default(uuid())
+  eventId   String
+  event     Events @relation(fields: [eventId], references: [id]) // This field represents the relationship
+  status   NewsStatus @default(Published)
+  currentRevision CurrentRevisionEvents?
+  title    String
+  img      String?
   subTitle String?
-  content String
-  lastUpdate DateTime @updatedAt
-  eventtime DateTime
-  hasImg Boolean      @default(false)
-  img    String?
+  content  String
+  eventtime DateTime // provides the time of the event (by user)
+  CreatedBy String
+  user     User @relation(fields: [CreatedBy], references: [id])
+  date     DateTime  @default(now())
+
 }

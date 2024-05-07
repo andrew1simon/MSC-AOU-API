@@ -15,10 +15,19 @@ const {CheckAuth} = require("./middleware/Auth.js");
 // Server Initialization 
 const app = express(); 
 const PORT = process.env.PORT || 3000; 
-
-//CORS
-const corsOptions ={
-	origin:['http://localhost:5173' , 'https://msc-aou.pages.dev'],  
+const allowedOrigins = [
+	"https://msc-aou.pages.dev",
+	"http://localhost:5173"
+  ];
+  
+  const corsOptions = {
+	origin: (origin, callback) => {
+	  if (allowedOrigins.includes(origin) || !origin) {
+		callback(null, true);
+	  } else {
+		callback(new Error('Your CORS policy does not allow access from this origin.'));
+	  }
+	},  
 	credentials:true,     //access-control-allow-credentials:true
 	allowedHeaders: ["Content-Type", "Authorization", "Access-Control-Allow-Methods", "Access-Control-Request-Headers"],
 	enablePreflight: true,

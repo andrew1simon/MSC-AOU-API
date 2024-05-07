@@ -1,28 +1,8 @@
 const  { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 
-async function adminApi(req,res) {
-    res.send("admin api")
-}
 
-async function AdminProfile(req,res) {
-    const { user } = req;
-    res.status(200).json(user);
-
-}
-
-async function CreateNewNews(req, res) {
-    let { title, content, hasImg, subTitle , img} = req.body;
-    try {
-        await prisma.news.create({ data: { title, content, hasImg, subTitle , img} });
-        res.status(201).json({ msg: 'News Created' })
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ msg: 'Server Error'})
-    }
-}
-
-async function CreateNewEventsV2(req, res) {
+async function CreateNewNewsV2(req, res) {
     let { title, content, hasImg, subTitle , img} = req.body;
         async function createNewsWithRevision(revisionData) {
         // Start a transaction
@@ -55,10 +35,10 @@ async function CreateNewEventsV2(req, res) {
             return result
         }
     const user = req.user;
-    console.log('[user data]',user)
     createNewsWithRevision({
     status: 'Published',
     title: title,
+    subTitle: subTitle,
     content: content,
     CreatedBy: user.id,
     })
@@ -121,18 +101,6 @@ async function UpdateNews (req, res) {
 
 }
 
-async function CreateNewEvents(req, res) {
-    // time input is in ISO 8601 stand. Converter demo at time.lol
-    let { title, content,eventtime, hasImg, subTitle } = req.body;
-    try {
-        await prisma.events.create({ data: { title, content,eventtime, hasImg, subTitle} });
-        res.status(201).json({ msg: 'Event Created' })
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ msg: 'Server Error' })
-    }
-}
-
 async function DeleteNews(req, res) {
     const { id } = req.params;
     try {
@@ -146,14 +114,6 @@ async function DeleteNews(req, res) {
     }
 }
 
-module.exports = { 
-	adminApi , 
-    CreateNewNews , 
-    CreateNewEvents,
-    CreateNewEventsV2,
-    GetNewsByIdV2,
-    UpdateNews,
-    DeleteNews,
-    AdminProfile
+module.exports = {
+     CreateNewNewsV2 , GetNewsByIdV2 , UpdateNews , DeleteNews
 }
-

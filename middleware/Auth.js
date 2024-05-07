@@ -6,7 +6,7 @@ const prisma = new PrismaClient()
 async function CheckAdmin(req,res,next) {
     const token = req.cookies?.token
     if(token) {
-        let decoded = jwt.verify(token,JWTKey)
+        let decoded = jwt.verify(token, process.env.JWT_Key)
         if(decoded) {
             const DB = await prisma.user.findFirst({select: {id:true , userName:true , team:true , TeamTitle:true , role:true , name:true } , where:{id:decoded.userId , role:"ADMIN"}})
             if(DB) {
@@ -25,7 +25,7 @@ async function CheckAdmin(req,res,next) {
 async function CheckAuth(req,res,next) {
     const token = req.cookies?.token
     if(token) {
-        let decoded = jwt.verify(token,JWTKey)
+        let decoded = jwt.verify(token, process.env.JWT_Key)
         if(decoded) {
             const DB = await prisma.user.findFirst({where:{id:decoded.userId , role:"USER"}})
             if(DB) {
